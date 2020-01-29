@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  become: yes
+
+  pre_tasks:
+    - name: enable IPv6
+      lineinfile:
+        path: /etc/sysctl.d/99-sysctl.conf
+        line: net.ipv6.conf.all.disable_ipv6 = 0
+    - name: reload sysctl
+      command: sysctl --system
+
+  roles:
+    - role: ipaserver
+      vars:
+        ipaadmin_password: ADMPassword1
+        ipadm_password: DMPassword1
+        ipaserver_domain: test.local
+        ipaserver_realm: TEST.LOCAL
